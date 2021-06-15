@@ -1,0 +1,10 @@
+<?xml version='1.0' encoding='ISO-8859-1'?>
+<node fwinfo="endpoint">
+    <node address="0x0" mask="0x01" id="mea_clk_locked" permission="r"/>
+
+    <node address="0x2" mask="0x01" id="mea_start_scan" permission="rw"/>
+    <node address="0x3" mask="0x01" id="rst_mmcm" permission="rw"/>
+    <node address="0x3" mask="0x02" id="drp_rst" permission="rw"/>
+
+    <node address="0x800" tags="slave" id="mea_clk_drp" module="file://../slave/drp_slave.xml" />
+</node>
