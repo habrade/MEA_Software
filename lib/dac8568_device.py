@@ -21,11 +21,11 @@ class Dac8568Device:
         return busy_raw.value() == 1
 
     def reset_dev(self):
-        reg_name = self.reg_name_base + "rst_n"
+        reg_name = self.reg_name_base + "rst"
         node = self.hw.getNode(reg_name)
-        node.write(1)
         node.write(0)
         node.write(1)
+        node.write(0)
         self.hw.dispatch()
 
     def start_conv(self):

@@ -2,7 +2,7 @@
 <node id="dac8568_dev" fwinfo="endpoint; width=4">
   <node address="0x0" mask="0x00000001" id="busy"/>
 
-  <node address="0x8" mask="0x00000001" id="rst_n" />
+  <node address="0x8" mask="0x00000001" id="rst" />
   <node address="0x8" mask="0x00000002" id="start" />
   <node address="0x8" mask="0x000003fc" id="sel_ch"/>
 

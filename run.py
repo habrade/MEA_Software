@@ -11,8 +11,8 @@ from lib.mea_device import MeaDevice
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 log = logging.getLogger(__name__)
-log.setLevel(logging.INFO)
-coloredlogs.install(level='INFO', logger=log)
+log.setLevel(logging.DEBUG)
+coloredlogs.install(level='DEBUG', logger=log)
 
 __author__ = "Sheng Dong"
 __email__ = "s.dong@mails.ccnu.edu.cn"
@@ -53,14 +53,15 @@ def main(Fout, Precision):
     dac_dev.start_conv()
     ## Set MEA
     """ set clock """
-    set_mea(mea_dev, Fout, Precision)
+    # set_mea(mea_dev, Fout, Precision)
     """ start scan """
+    mea_dev.reset_scan()
     mea_dev.start_scan()
     ## Test clock frq
     fre_counter(freq_ctr_dev)
 
 
 if __name__ == '__main__':
-    Fout = 5 ## Unit: MHz
-    Precision = 0.1  ## Unit: Hundred percent, %
+    Fout = 10.0  ## Unit: MHz
+    Precision = 0.2  ## Unit: Hundred percent, %
     main(Fout, Precision)

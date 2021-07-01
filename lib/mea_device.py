@@ -7,8 +7,8 @@ from lib.mmcm import Mmcm
 
 logging.basicConfig(level=logging.DEBUG, format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 log = logging.getLogger(__name__)
-log.setLevel(logging.DEBUG)
-coloredlogs.install(level="DEBUG", logger=log)
+log.setLevel(logging.INFO)
+coloredlogs.install(level="INFO", logger=log)
 
 __author__ = "Sheng Dong"
 __email__ = "s.dong@mails.ccnu.edu.cn"
@@ -33,14 +33,22 @@ class MeaDevice:
         self.filter_reg1 = 0x0000
         self.filter_reg2 = 0x0000
 
-        log.debug("MEA Device")
+        log.debug("MEA device initailed.")
 
     def start_scan(self):
-        reg_name = self.mea_base + "start_scan" 
+        reg_name = self.mea_base + "mea_start_scan" 
         node = self.hw.getNode(reg_name)
-        node.write(1)
         node.write(0)
         node.write(1)
+        node.write(0)
+        self.hw.dispatch()
+
+    def reset_scan(self):
+        reg_name = self.mea_base + "mea_reset_scan" 
+        node = self.hw.getNode(reg_name)
+        node.write(0)
+        node.write(1)
+        node.write(0)
         self.hw.dispatch()
 
     def drp_clkout_frac(self, divide, phase):
@@ -547,7 +555,7 @@ class MeaDevice:
         else:
             return False
 
-    def rst_mmcm(self, enabled, go_dispatch=False):
+    def rst_mmcm(self, enabled):
         reg_name = self.mea_base + "rst_mmcm"
         node = self.hw.getNode(reg_name)
         if enabled:
@@ -556,26 +564,26 @@ class MeaDevice:
             write_val = 0
 
         node.write(write_val)
-        if go_dispatch:
-            self.hw.dispatch()
+        # if go_dispatch:
+        self.hw.dispatch()
 
-    def rst_drp(self, enabled, go_dispatch=False):
-        reg_name = self.mea_base + "rst_drp"
+    def rst_drp(self, enabled):
+        reg_name = self.mea_base + "drp_rst"
         node = self.hw.getNode(reg_name)
         if enabled:
             write_val = 1
         else:
             write_val = 0
         node.write(write_val)
-        if go_dispatch:
-            self.hw.dispatch()
+        # if go_dispatch:
+        self.hw.dispatch()
 
-    def w_reg(self, reg, val, reg_base, go_dispatch):
+    def w_reg(self, reg, val, reg_base):
         reg_name = reg_base + reg
         node = self.hw.getNode(reg_name)
         node.write(val)
-        if go_dispatch:
-            self.hw.dispatch()
+        # if go_dispatch:
+        self.hw.dispatch()
 
     def set_clock(self, divide_O, mult, divide):
         duty_cycle = 0.5
@@ -586,8 +594,8 @@ class MeaDevice:
         divide_O_regs = self.drp_clkout(divide_O, duty_cycle, phase_O, mmcm_clk)
         regs_drp_settings = self.drp_settings(mult, divide, phase_fb, bw)
         ## MMCM rst pin must be assert during DRP
-        self.rst_drp(False, False)
-        self.rst_mmcm(True, False)
+        self.rst_drp(False)
+        self.rst_mmcm(True)
 
         clk_reg_base = self.meaclk_base
 
@@ -605,9 +613,9 @@ class MeaDevice:
 
         ## Write regs
         for reg in write_seq.keys():
-            self.w_reg(reg, write_seq[reg], clk_reg_base, False)
+            self.w_reg(reg, write_seq[reg], clk_reg_base)
         # Deassert after DRP
-        self.rst_mmcm(False, False)
+        self.rst_mmcm(False)
         ## Set DRP Ports tp default
         self.rst_drp(True, True)
         ## Clear dictionary

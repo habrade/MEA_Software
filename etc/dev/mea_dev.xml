@@ -3,6 +3,7 @@
     <node address="0x0" mask="0x01" id="mea_clk_locked" permission="r"/>
 
     <node address="0x2" mask="0x01" id="mea_start_scan" permission="rw"/>
+    <node address="0x2" mask="0x02" id="mea_reset_scan" permission="rw"/>
     <node address="0x3" mask="0x01" id="rst_mmcm" permission="rw"/>
     <node address="0x3" mask="0x02" id="drp_rst" permission="rw"/>
 
