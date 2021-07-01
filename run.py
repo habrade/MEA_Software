@@ -29,9 +29,11 @@ def set_mea(mea_dev, Fout, Precision):
 
 
 def fre_counter(freq_ctr_dev):
-    clock_name = "clk_mea"
-    freq_mea = freq_ctr_dev.get_chn_freq(0)
-    log.info("Tested {:s} Clock frequency is : {}".format(clock_name, freq_mea))
+    N_CLK = 2
+    clock_name = ["clk_dac", "clk_mea"]
+    for i in range(N_CLK):
+        freq_mea = freq_ctr_dev.get_chn_freq(i)
+        log.info("Tested {:s} frequency is : {}".format(clock_name[i], freq_mea))
 
 
 def main(Fout, Precision):
