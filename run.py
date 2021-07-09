@@ -32,8 +32,8 @@ def fre_counter(freq_ctr_dev):
     N_CLK = 2
     clock_name = ["clk_dac", "clk_mea"]
     for i in range(N_CLK):
-        freq_mea = freq_ctr_dev.get_chn_freq(i)
-        log.info("Tested {:s} frequency is : {}".format(clock_name[i], freq_mea))
+        freq = freq_ctr_dev.get_chn_freq(i)
+        log.info("Tested {:s} frequency is : {}".format(clock_name[i], freq))
 
 
 def main(Fout, Precision):
@@ -59,6 +59,8 @@ def main(Fout, Precision):
     """ start scan """
     mea_dev.reset_scan()
     mea_dev.start_scan()
+    mea_dev.set_div(div=2)
+    mea_dev.sel_mea_clk(is_div=True)
     ## Test clock frq
     fre_counter(freq_ctr_dev)
 

@@ -51,6 +51,27 @@ class MeaDevice:
         node.write(0)
         self.hw.dispatch()
 
+    def sel_mea_clk(self, is_div=True):
+        """
+        The default MEA clock is 5 MHz (Fin). For testing, a low frequency clock should be created.
+        is_div: when True, use a low frequency clock. When false, mea clock frequency is 5 MHz.
+        """
+        reg_name = self.mea_base + "sel_mea_clk"
+        node = self.hw.getNode(reg_name)
+        node.write(is_div)
+        self.hw.dispatch()
+
+    def set_div(self, div=2):
+        """
+        The default MEA clock is 5 MHz (Fin). For testing, a low frequency clock should be created.
+        cnt: The counters for the divide clock module. The output clock frequency is Fout = Fin / div.
+        """
+        assert div%2 == 0
+        reg_name = self.mea_base + "mea_clk_div_cnt"
+        node = self.hw.getNode(reg_name)
+        node.write(div//2)
+        self.hw.dispatch()
+        
     def drp_clkout_frac(self, divide, phase):
         log.debug("Calculate clkout frac, divide: {:} phase: {:}".format(divide, phase))
         divide_frac = math.fmod(divide, 1)

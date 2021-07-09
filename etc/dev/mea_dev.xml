@@ -2,10 +2,13 @@
 <node fwinfo="endpoint">
     <node address="0x0" mask="0x01" id="mea_clk_locked" permission="r"/>
 
-    <node address="0x2" mask="0x01" id="mea_start_scan" permission="rw"/>
-    <node address="0x2" mask="0x02" id="mea_reset_scan" permission="rw"/>
-    <node address="0x3" mask="0x01" id="rst_mmcm" permission="rw"/>
-    <node address="0x3" mask="0x02" id="drp_rst" permission="rw"/>
+    <node address="0x4" mask="0x01" id="mea_start_scan" permission="rw"/>
+    <node address="0x4" mask="0x02" id="mea_reset_scan" permission="rw"/>
+    <node address="0x4" mask="0x04" id="sel_mea_clk" permission="rw"/>
+    <node address="0x5" mask="0x01" id="rst_mmcm" permission="rw"/>
+    <node address="0x5" mask="0x02" id="drp_rst" permission="rw"/>
+
+    <node address="0x6" id="mea_clk_div_cnt" permission="rw"/>
 
     <node address="0x800" tags="slave" id="mea_clk_drp" module="file://../slave/drp_slave.xml" />
 </node>
